@@ -36,6 +36,7 @@ public class ConversionTools {
 
     /**
      * 十六进制转换字符串
+     *
      * @param hexStr Byte字符串(Byte之间无分隔符 如:[31613D])
      * @return String 对应的字符串  "31613D" -> "1a="
      */
@@ -54,6 +55,7 @@ public class ConversionTools {
 
     /**
      * 数据转换成字符串
+     *
      * @param array 数值
      * @return String 大数字符串 每个Int之间空格分隔，如：{0x0001,0x0002,0x0100} -> "0001 0002 0100"
      */
@@ -62,11 +64,15 @@ public class ConversionTools {
         StringBuilder sb = new StringBuilder("");
         for (int n = 0; n < array.length; n++) {
             stmp = Integer.toHexString(array[n] & 0xFFFF);
-            if(stmp.length() == 0){sb.append("0000");}
-            else if(stmp.length() == 1){sb.append( "000" + stmp );}
-            else if(stmp.length() == 2){sb.append("00" + stmp);}
-            else if(stmp.length() == 3){sb.append("0" + stmp);}
-            else sb.append(stmp);
+            if (stmp.length() == 0) {
+                sb.append("0000");
+            } else if (stmp.length() == 1) {
+                sb.append("000" + stmp);
+            } else if (stmp.length() == 2) {
+                sb.append("00" + stmp);
+            } else if (stmp.length() == 3) {
+                sb.append("0" + stmp);
+            } else sb.append(stmp);
             sb.append(" ");
         }
         return sb.toString().toUpperCase().trim();
@@ -74,6 +80,7 @@ public class ConversionTools {
 
     /**
      * 数据转换成字符串
+     *
      * @param array 数值
      * @return 小数字符串 每个Int之间空格分隔，如：{0x0001,0x0002,0x0100} -> "0100 0200 0001"
      */
@@ -81,12 +88,16 @@ public class ConversionTools {
         String stmp = "";
         StringBuilder sb = new StringBuilder("");
         for (int n = 0; n < array.length; n++) {
-            for(int i= 0;i<2;i++) {
-                if(i==0)stmp = Integer.toHexString(array[n] & 0xFF);
-                if(i==1)stmp = Integer.toHexString((array[n]>>8) & 0xFF);
-                if(stmp.length() == 0){sb.append("00");}
-                else if(stmp.length() == 1){sb.append( "0" + stmp );}
-                else{sb.append(stmp);}
+            for (int i = 0; i < 2; i++) {
+                if (i == 0) stmp = Integer.toHexString(array[n] & 0xFF);
+                if (i == 1) stmp = Integer.toHexString((array[n] >> 8) & 0xFF);
+                if (stmp.length() == 0) {
+                    sb.append("00");
+                } else if (stmp.length() == 1) {
+                    sb.append("0" + stmp);
+                } else {
+                    sb.append(stmp);
+                }
             }
             sb.append(" ");
         }
@@ -127,14 +138,13 @@ public class ConversionTools {
     }
 
 
-
     /**
      * bytes转换成十六进制字符串
      *
      * @param b byte数组
      * @return String 每个Byte值之间空格分隔  {0x01,0x02} -> "01 02"
      */
-    public static String byte2HexStr(byte[] b) {
+    public String byte2HexStr(byte[] b) {
         String stmp = "";
         StringBuilder sb = new StringBuilder("");
         for (int n = 0; n < b.length; n++) {
@@ -151,7 +161,7 @@ public class ConversionTools {
      * @param src Byte字符串，每个Byte之间没有分隔符 发（不能超过7f（127），如：80就会有错误）
      * @return byte[]      "020a7f" -> {0x01,0x0a,0x7f}
      */
-    public static byte[] hexStr2Bytes(String src) {
+    public byte[] hexStr2Bytes(String src) {
         int l = src.length() / 2;
         byte[] ret = new byte[l];
         for (int i = 0; i < l; i++) {
@@ -167,7 +177,7 @@ public class ConversionTools {
      * @return String 每个unicode之间无分隔符 如："我是天才" -> "\u6211\u662f\u5929\u624d"
      * @throws Exception
      */
-    public static String strToUnicode(String strText)
+    public String strToUnicode(String strText)
             throws Exception {
         char c;
         StringBuilder str = new StringBuilder();
@@ -191,7 +201,7 @@ public class ConversionTools {
      * @param hex 16进制值字符串 （一个unicode为2byte）
      * @return String 全角字符串 如："\\u6211\\u662f\\u5929\\u624d" -> "我是天才"
      */
-    public static String unicodeToString(String hex) {
+    public String unicodeToString(String hex) {
         int t = hex.length() / 6;
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < t; i++) {
@@ -209,5 +219,27 @@ public class ConversionTools {
         return str.toString();
     }
 
+    /**
+     * Btye 转换成 Str
+     * @param b  byte
+     * @param flag true ：表示输出如0x03->03 ;false:表示输出0x03->3
+     * @return Str
+     */
+    public String byte2Str(byte b, boolean flag) {
+        String stmp = Integer.toHexString(b & 0xFF);
+        if (!flag) {
+            return stmp;
+        } else {
+            StringBuilder sb = new StringBuilder("");
+            sb.append((stmp.length() == 1) ? "0" + stmp : stmp);
+            stmp = sb.toString();
+            return stmp.toUpperCase().trim();
+        }
 
+
+    }
+
+    public static void main(String[] args) {
+        System.out.println(ConversionTools.Tool().byte2Str((byte) 0xff, true));
+    }
 }
