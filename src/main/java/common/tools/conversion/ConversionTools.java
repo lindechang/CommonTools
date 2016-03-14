@@ -221,7 +221,8 @@ public class ConversionTools {
 
     /**
      * Btye 转换成 Str
-     * @param b  byte
+     *
+     * @param b    byte
      * @param flag true ：表示输出如0x03->03 ;false:表示输出0x03->3
      * @return Str
      */
@@ -233,13 +234,10 @@ public class ConversionTools {
             StringBuilder sb = new StringBuilder("");
             sb.append((stmp.length() == 1) ? "0" + stmp : stmp);
             stmp = sb.toString();
-            return stmp.toUpperCase().trim();
+            return stmp.trim();
         }
 
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(ConversionTools.Tool().byte2Str((byte) 0xff, true));
-    }
 }
